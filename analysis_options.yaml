@@ -1,7 +1,9 @@
 analyzer: 
   exclude: 
-    - bricks/clean_starter/__brick__/**
-    - bricks/cubit_starter/__brick__/**
-    - bricks/clean_app/__brick__/**
     - docs/**
     - generated/**
+    - bricks/domain/__brick__/**
+    - bricks/data/__brick__/**
+    - bricks/presentation/__brick__/**
+    - bricks/feature/__brick__/**
+    - bricks/skeleton/__brick__/**

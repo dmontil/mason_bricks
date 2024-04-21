@@ -1,5 +1,11 @@
 bricks:
-  clean_starter:
-    path: bricks/clean_starter
-  cubit_starter:
-    path: bricks/cubit_starter
+  domain:
+    path: bricks/domain
+  data:
+    path: bricks/data
+  presentation:
+    path: bricks/presentation
+  feature:
+    path: bricks/feature
+  skeleton:
+    path: bricks/skeleton

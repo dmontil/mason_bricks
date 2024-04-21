@@ -1,1 +1,1 @@
-{"bricks":{"clean_starter":{"path":"bricks/clean_starter"},"cubit_starter":{"path":"bricks/cubit_starter"}}}
+{"bricks":{"data":{"path":"/Users/monti/Development/mason_bricks/bricks/data"},"domain":{"path":"/Users/monti/Development/mason_bricks/bricks/domain"},"feature":{"path":"/Users/monti/Development/mason_bricks/bricks/feature"},"presentation":{"path":"/Users/monti/Development/mason_bricks/bricks/presentation"},"skeleton":{"path":"/Users/monti/Development/mason_bricks/bricks/skeleton"}}}
