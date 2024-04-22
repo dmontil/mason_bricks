@@ -1,7 +1,6 @@
 import 'dart:convert';
-
-import 'package:mason/mason.dart';
 import 'dart:io';
+import 'package:mason/mason.dart';
 import 'package:path/path.dart' as path;
 
 void run(HookContext context) async {
@@ -10,9 +9,9 @@ void run(HookContext context) async {
 }
 
 Future<void> generateLayersFeature(HookContext context) async {
-  var layers = ['domain', 'data', 'presentation'];
-  for (var brickName in layers) {
-    await generateFromBrick2(brickName, context);
+  const layers = ['domain', 'data', 'presentation'];
+  for (var layer in layers) {
+    await generateFromBrick(layer, context);
   }
 }
 
@@ -25,49 +24,47 @@ Future<void> runFlutterPubGet(HookContext context) async {
   }
 }
 
-
-Future<void> generateFromBrick2(String brickName, HookContext context) async {
-  var outputDirectory = getOutputDirectory(context.vars['name'], brickName, context);
-  outputDirectory.createSync(recursive: true); // This will create the directory
+Future<void> generateFromBrick(String brickName, HookContext context) async {
+  var outputDirectory =
+      getOutputDirectory2(context.vars['name'], brickName, context);
+  outputDirectory.createSync(recursive: true);
   context.logger.detail(outputDirectory.path);
 
+  var result = await Process.start('mason', [
+    'make',
+    brickName,
+    '-o',
+    outputDirectory.path,
+    '--name',
+    context.vars['name']
+  ]);
 
-  var result = await Process.start(
-    'mason', ['make', brickName, '-o', outputDirectory.path, '--name', context.vars['name']]
-  );
-  result.stdout.transform(utf8.decoder).listen((data) => print(data));
-  result.stderr.transform(utf8.decoder).listen((data) => print(data));
+  result.stdout.transform(utf8.decoder).listen(print);
+  result.stderr.transform(utf8.decoder).listen(print);
 
-  var exitCode = await result.exitCode;
-
-  if (exitCode != 0) {
+  if (await result.exitCode != 0) {
     context.logger.err('Failed to generate from brick');
   } else {
     context.logger.detail('Successfully generated from brick');
   }
 }
 
-String getBrickPath(String brickName) {
-  var currentPath =
-      path.normalize(path.join(Directory.current.path, '..', '..'));
-  return path.join(currentPath, 'bricks', brickName);
-}
-
-bool doesBrickExist(String brickPath) {
-  return File(path.join(brickPath, 'brick.yaml')).existsSync();
-}
-
-
-Directory getOutputDirectory(String featureName, String brickName, HookContext context) {
+Directory getOutputDirectory(
+    String featureName, String brickName, HookContext context) {
   if (context.vars['split']) {
-    return Directory(path.join(Directory.current.path, 'lib', brickName, featureName));
+    return Directory(
+        path.join(Directory.current.path, 'lib', brickName, featureName));
   } else {
     return Directory(path.join(Directory.current.path, featureName, brickName));
   }
 }
-
+Directory getOutputDirectory2(
+    String featureName, String brickName, HookContext context) {
+  var basePath = Directory.current.path;
+  var split = context.vars['split'] as bool ;
+  var paths = split ? [basePath, 'lib', brickName, featureName] : [basePath, featureName, brickName];
+  return Directory(path.joinAll(paths));
+}
 void logGeneratedFiles(HookContext context, List<GeneratedFile> files) {
-  for (var file in files) {
-    context.logger.detail('Generated: ${file.path}');
-  }
+  files.forEach((file) => context.logger.detail('Generated: ${file.path}'));
 }
