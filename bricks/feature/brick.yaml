@@ -28,6 +28,10 @@ environment:
 vars:
   name:
     type: string
-    description: Your name
-    default: Dash
-    prompt: What is your name?
+    description: Name for the feature
+    prompt: Name for the feature
+  split:
+    type: boolean
+    description: Build the feature in different layers
+    default: false
+    prompt: Build the feature in different layers

@@ -31,8 +31,3 @@ vars:
     description: Name for the model/repository
     default: feature
     prompt: Name for the model/repository
-  run_post_gen:
-    type: boolean
-    description: Run post-generation script
-    default: true
-    prompt: Do you want to run the post-generation script?

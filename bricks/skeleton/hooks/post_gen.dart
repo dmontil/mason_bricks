@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:mason/mason.dart';
 
@@ -56,12 +57,20 @@ Future<void> _runFlutterPubGet(HookContext context, String projectName) async {
   final flutterPubGetProgress = context.logger.progress("Running pub get script");
   final result = await Process.start("sh", ["scripts/pub_get.sh"], workingDirectory: projectName);
 
+  result.stdout.transform(utf8.decoder).listen((data) {
+    print(data);
+  });
+
+  result.stderr.transform(utf8.decoder).listen((data) {
+    print(data);
+  });
+
   final exitCode = await result.exitCode;
 
   if (exitCode == 0) {
     flutterPubGetProgress.complete("Pub get script successfully executed!");
   } else {
-    flutterPubGetProgress.complete("An error occurred on pub get script ${result.stderr.toString()}");
+    flutterPubGetProgress.complete("An error occurred on pub get script");
     exit(exitCode);
   }
 }

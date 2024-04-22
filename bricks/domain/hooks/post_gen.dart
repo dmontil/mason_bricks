@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:mason/mason.dart';
 
 void run(HookContext context) async {
-  final runPostGen = context.vars['run_post_gen'] as bool;
+  final runPostGen = context.vars['run_post_gen'] as bool? ?? false;
 
   if (runPostGen) {
     // context.logger.info('Running flutter pub get...');
