@@ -26,7 +26,7 @@ Future<void> runFlutterPubGet(HookContext context) async {
 
 Future<void> generateFromBrick(String brickName, HookContext context) async {
   var outputDirectory =
-      getOutputDirectory2(context.vars['name'], brickName, context);
+      getOutputDirectory(context.vars['name'], brickName, context);
   outputDirectory.createSync(recursive: true);
   context.logger.detail(outputDirectory.path);
 
@@ -48,17 +48,7 @@ Future<void> generateFromBrick(String brickName, HookContext context) async {
     context.logger.detail('Successfully generated from brick');
   }
 }
-
 Directory getOutputDirectory(
-    String featureName, String brickName, HookContext context) {
-  if (context.vars['split']) {
-    return Directory(
-        path.join(Directory.current.path, 'lib', brickName, featureName));
-  } else {
-    return Directory(path.join(Directory.current.path, featureName, brickName));
-  }
-}
-Directory getOutputDirectory2(
     String featureName, String brickName, HookContext context) {
   var basePath = Directory.current.path;
   var split = context.vars['split'] as bool ;
